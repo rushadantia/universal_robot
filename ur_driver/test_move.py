@@ -15,7 +15,10 @@ Q3 = [1.5,-0.2,-1.57,0,0,0]
 client = None
 
 def move_list_repeated():
-	QQ = [[2.2,0,-1.57,0,0,0],[1.5,0,-1.57,0,0,0],[1.5,-0.2,-1.57,0,0,0]]
+	QQ = [[.79150682,-1.4945254,-1.5666075,-1.6758651,1.558579,1.5475834],
+		  [.79133228,-1.6645205,-2.11429186,-0.95836029,1.5617206,1.5460127],
+		  [.79150682,-1.4945254,-1.5666075,-1.6758651,1.558579,1.5475834]
+		  ]
   	g = FollowJointTrajectoryGoal()
     g.trajectory = JointTrajectory()
     g.trajectory.joint_names = JOINT_NAMES
@@ -117,9 +120,10 @@ def main():
         client.wait_for_server()
         print "Connected to server"
         #move1()
-        move_repeated()
+        #move_repeated()
         #move_disordered()
         #move_interrupt()
+        move_list_repeated()
     except KeyboardInterrupt:
         rospy.signal_shutdown("KeyboardInterrupt")
         raise
