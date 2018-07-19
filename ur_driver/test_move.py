@@ -11,31 +11,28 @@ JOINT_NAMES = ['shoulder_pan_joint', 'shoulder_lift_joint', 'elbow_joint',
 Q1 = [2.2,0,-1.57,0,0,0]
 Q2 = [1.5,0,-1.57,0,0,0]
 Q3 = [1.5,-0.2,-1.57,0,0,0]
+QQ = [[.79150682,-1.4945254,-1.5666075,-1.6758651,1.558579,1.5475834],[.79133228,-1.6645205,-2.11429186,-0.95836029,1.5617206,1.5460127]]
 
 client = None
 
 def move_list_repeated():
-	QQ = [[.79150682,-1.4945254,-1.5666075,-1.6758651,1.558579,1.5475834],
-		  [.79133228,-1.6645205,-2.11429186,-0.95836029,1.5617206,1.5460127],
-		  [.79150682,-1.4945254,-1.5666075,-1.6758651,1.558579,1.5475834]
-		  ]
-  	g = FollowJointTrajectoryGoal()
-    g.trajectory = JointTrajectory()
-    g.trajectory.joint_names = JOINT_NAMES
-    
-    d = 2.0
-    g.trajectory.points = []
-    for i in range(10):
-    	for x in range(len(QQ)):
-	        g.trajectory.points.append(
-	            JointTrajectoryPoint(positions=QQ[x], velocities=[0]*6, time_from_start=rospy.Duration(d)))
-	        d += 2
-    client.send_goal(g)
-    try:
-        client.wait_for_result()
-    except KeyboardInterrupt:
-        client.cancel_goal()
-        raise
+	g = FollowJointTrajectoryGoal()
+	g.trajectory = JointTrajectory()
+	g.trajectory.joint_names = JOINT_NAMES
+
+	d = 2.0
+	g.trajectory.points = []
+	for i in range(10):
+		for x in range(len(QQ)):
+			g.trajectory.points.append(
+				JointTrajectoryPoint(positions=QQ[x], velocities=[0]*6, time_from_start=rospy.Duration(d)))
+			d += 2
+	client.send_goal(g)
+	try:
+		client.wait_for_result()
+	except KeyboardInterrupt:
+		client.cancel_goal()
+		raise
 
 def move1():
     g = FollowJointTrajectoryGoal()
