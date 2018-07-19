@@ -14,6 +14,26 @@ Q3 = [1.5,-0.2,-1.57,0,0,0]
 
 client = None
 
+def move_list_repeated():
+	QQ = [[2.2,0,-1.57,0,0,0],[1.5,0,-1.57,0,0,0],[1.5,-0.2,-1.57,0,0,0]]
+  	g = FollowJointTrajectoryGoal()
+    g.trajectory = JointTrajectory()
+    g.trajectory.joint_names = JOINT_NAMES
+    
+    d = 2.0
+    g.trajectory.points = []
+    for i in range(10):
+    	for x in range(len(QQ)):
+	        g.trajectory.points.append(
+	            JointTrajectoryPoint(positions=QQ[x], velocities=[0]*6, time_from_start=rospy.Duration(d)))
+	        d += 2
+    client.send_goal(g)
+    try:
+        client.wait_for_result()
+    except KeyboardInterrupt:
+        client.cancel_goal()
+        raise
+
 def move1():
     g = FollowJointTrajectoryGoal()
     g.trajectory = JointTrajectory()
@@ -75,7 +95,8 @@ def move_interrupt():
     g.trajectory.points = [
         JointTrajectoryPoint(positions=Q1, velocities=[0]*6, time_from_start=rospy.Duration(2.0)),
         JointTrajectoryPoint(positions=Q2, velocities=[0]*6, time_from_start=rospy.Duration(3.0)),
-        JointTrajectoryPoint(positions=Q3, velocities=[0]*6, time_from_start=rospy.Duration(4.0))]
+        JointTrajectoryPoint(positions=Q3, velocities=[0]*6, time_from_start=rospy.Duration(4.0))
+        				  ]
     
     client.send_goal(g)
     time.sleep(2.0)
